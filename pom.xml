@@ -15,6 +15,9 @@
         <module>sino-mall-member</module>
         <module>sino-mall-ware</module>
         <module>sino-mall-order</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>sino-mall-common</module>
     </modules>
 
 

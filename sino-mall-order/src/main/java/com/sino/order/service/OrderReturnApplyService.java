@@ -1,0 +1,20 @@
+package com.sino.order.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.sino.common.utils.PageUtils;
+import com.sino.order.entity.OrderReturnApplyEntity;
+
+import java.util.Map;
+
+/**
+ * 订单退货申请
+ *
+ * @author yanglu
+ * @email 2318456591@qq.com
+ * @date 2023-08-21 15:20:12
+ */
+public interface OrderReturnApplyService extends IService<OrderReturnApplyEntity> {
+
+    PageUtils queryPage(Map<String, Object> params);
+}
+

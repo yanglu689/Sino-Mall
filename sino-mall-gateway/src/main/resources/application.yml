@@ -1,0 +1,58 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url,baidu
+        - id: qq_route
+          uri: https://www.qq.com
+          predicates: #根据参数路由
+            - Query=url,qq
+
+        # 商品服务api接口
+        - id: product-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-product
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/product/**
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+        # 第三方服务api接口
+        - id: third-party-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-third-party
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/thirdparty/**
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/thirdparty/(?<segment>.*), /$\{segment}
+
+        # 会员服务api接口
+        - id: member-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-member
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/member/**
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+
+        # 人人api路由
+        - id: admin-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://renren-fast
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/**
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
+
