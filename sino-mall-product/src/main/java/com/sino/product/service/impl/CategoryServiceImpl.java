@@ -18,6 +18,7 @@ import com.sino.product.dao.CategoryDao;
 import com.sino.product.entity.CategoryEntity;
 import com.sino.product.service.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 
 @Service("categoryService")
@@ -110,7 +111,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public List<Long> findParentPath(long catelogId, List<Long> cateLogIds){
         cateLogIds.add(catelogId);
         CategoryEntity byId = this.getById(catelogId);
-        if (byId.getParentCid() != 0){
+        if (!ObjectUtils.isEmpty(byId) && byId.getParentCid() != 0){
             this.findParentPath(byId.getParentCid(),cateLogIds);
         }
         return cateLogIds;

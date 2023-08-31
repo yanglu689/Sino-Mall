@@ -44,6 +44,16 @@ spring:
           filters: # 设置路径过滤将/api替换为/renren-fast
             - RewritePath=/api/(?<segment>.*), /$\{segment}
 
+        # 仓储服务api接口
+        - id: ware-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-ware
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/ware/**
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
 
         # 人人api路由
         - id: admin-route
