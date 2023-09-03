@@ -3,11 +3,10 @@ package com.sino.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sino.common.constant.ProductConstant;
 import com.sino.product.dao.AttrAttrgroupRelationDao;
-import com.sino.product.entity.AttrAttrgroupRelationEntity;
-import com.sino.product.entity.AttrGroupEntity;
-import com.sino.product.entity.CategoryEntity;
+import com.sino.product.entity.*;
 import com.sino.product.service.AttrGroupService;
 import com.sino.product.service.CategoryService;
+import com.sino.product.service.ProductAttrValueService;
 import com.sino.product.vo.AttrRespVo;
 import com.sino.product.vo.AttrVo;
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +26,6 @@ import com.sino.common.utils.PageUtils;
 import com.sino.common.utils.Query;
 
 import com.sino.product.dao.AttrDao;
-import com.sino.product.entity.AttrEntity;
 import com.sino.product.service.AttrService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -44,6 +42,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
     @Autowired
     private AttrGroupService attrGroupService;
+
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -210,6 +211,20 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }
         Collection<AttrEntity> attrEntities = this.listByIds(attrIds);
         return (List<AttrEntity>) attrEntities;
+    }
+
+    @Override
+    public List<ProductAttrValueEntity> listForSpu(Long spuId) {
+        if (spuId == null){
+            return  null;
+        }
+        List<ProductAttrValueEntity> productAttrValueEntities = productAttrValueService.list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+        return productAttrValueEntities;
+    }
+
+    @Override
+    public void updateBySpuId(List<ProductAttrValueEntity> attrList, Long spuId) {
+        productAttrValueService.updateSpuAttr(attrList, spuId);
     }
 
 

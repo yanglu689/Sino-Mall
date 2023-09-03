@@ -1,8 +1,10 @@
 package com.sino.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.sino.product.entity.ProductAttrValueEntity;
 import com.sino.product.vo.AttrRespVo;
 import com.sino.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +91,27 @@ public class AttrController {
 
         return R.ok();
     }
+
+    /**
+     * 列表product/attr/
+     */
+    @GetMapping("/base/listforspu/{spuId}")
+    public R listForSpu(@PathVariable("spuId") Long spuId){
+        List<ProductAttrValueEntity> entityList = attrService.listForSpu(spuId);
+
+        return R.ok().put("data", entityList);
+    }
+
+    /**
+     * 修改 /product/attr/update/{spuId}
+     */
+    @PostMapping("/update/{spuId}")
+    public R updateBySpuId(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> attrList){
+        attrService.updateBySpuId(attrList,spuId);
+
+        return R.ok();
+    }
+
+
 
 }

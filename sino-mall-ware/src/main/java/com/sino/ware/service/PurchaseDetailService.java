@@ -3,7 +3,9 @@ package com.sino.ware.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sino.common.utils.PageUtils;
 import com.sino.ware.entity.PurchaseDetailEntity;
+import com.sino.ware.entity.PurchaseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +18,7 @@ import java.util.Map;
 public interface PurchaseDetailService extends IService<PurchaseDetailEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<PurchaseDetailEntity> updateStatusByPurchaseId(Long PurchaseId);
 }
 

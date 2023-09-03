@@ -3,6 +3,7 @@ package com.sino.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sino.common.utils.PageUtils;
 import com.sino.product.entity.AttrEntity;
+import com.sino.product.entity.ProductAttrValueEntity;
 import com.sino.product.vo.AttrRespVo;
 import com.sino.product.vo.AttrVo;
 
@@ -29,5 +30,9 @@ public interface AttrService extends IService<AttrEntity> {
     void updateDetail(AttrVo attrVo);
 
     List<AttrEntity> getRelationAttr(Long attrgroupId);
+
+    List<ProductAttrValueEntity> listForSpu(Long spuId);
+
+    void updateBySpuId(List<ProductAttrValueEntity> attrList, Long spuId);
 }
 

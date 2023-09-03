@@ -43,11 +43,6 @@
             <version>6.0.18.Final</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-extension</artifactId>
-            <version>3.4.1</version>
-        </dependency>
 
         <!--        阿里云对象存储依赖-->
 <!--        <dependency>-->
