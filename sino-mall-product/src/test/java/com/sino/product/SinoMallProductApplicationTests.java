@@ -11,20 +11,44 @@ package com.sino.product;
 //import com.aliyun.oss.model.PutObjectRequest;
 //import com.aliyun.oss.model.PutObjectResult;
 import com.sino.product.entity.BrandEntity;
+import com.sino.product.service.AttrGroupService;
 import com.sino.product.service.BrandService;
+import com.sino.product.service.SkuSaleAttrValueService;
+import com.sino.product.vo.SkuItemSaleAttrVo;
+import com.sino.product.vo.SpuItemAttrGroupVo;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 @SpringBootTest
 class SinoMallProductApplicationTests {
 
     @Autowired
     BrandService brandService;
+
+    @Autowired
+    RedissonClient redissonClient;
+
+    @Autowired
+    private AttrGroupService attrGroupService;
+
+    @Autowired
+    private SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Test
+    public void testAttr(){
+//        List<SpuItemAttrGroupVo> attrGroupWithAttrBySpuId = attrGroupService.getAttrGroupWithAttrBySpuId(311L, 1433L);
+//        System.out.println(attrGroupWithAttrBySpuId.toString());
+        List<SkuItemSaleAttrVo> skuSaleAttrBySpuId = skuSaleAttrValueService.getSkuSaleAttrBySpuId(3L);
+        System.out.println(skuSaleAttrBySpuId.toString());
+    }
+
 
 //    @Test
 //    public void testUpload() throws com.aliyuncs.exceptions.ClientException {
@@ -88,6 +112,11 @@ class SinoMallProductApplicationTests {
 
 //        brandService.updateById(brandEntity);
 
+    }
+
+    @Test
+    public void testRedisson(){
+        System.out.println(redissonClient);
     }
 
 }

@@ -10,6 +10,7 @@ import com.sino.product.service.AttrService;
 import com.sino.product.vo.AttrAttrGroupRelationVo;
 import com.sino.product.vo.AttrGroupVo;
 import com.sino.product.vo.AttrVo;
+import com.sino.product.vo.SpuItemAttrGroupVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -202,5 +203,12 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         }).collect(Collectors.toList());
 
         return attrGroupVos;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> getAttrGroupWithAttrBySpuId(Long spuId, Long catalogId) {
+        AttrGroupDao baseMapper = this.baseMapper;
+        List<SpuItemAttrGroupVo> spuItemAttrGroupVos = baseMapper.getAttrGroupWithAttrBySpuId(spuId,catalogId);
+        return spuItemAttrGroupVos;
     }
 }

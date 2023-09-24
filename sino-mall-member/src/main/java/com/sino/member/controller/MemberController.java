@@ -3,13 +3,15 @@ package com.sino.member.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.sino.common.exception.BizCodeEnum;
+import com.sino.member.exception.PhoneExistException;
+import com.sino.member.exception.UserNameExistException;
 import com.sino.member.feign.CouponFeignService;
+import com.sino.member.vo.MemberLoginVo;
+import com.sino.member.vo.MemberRegistVo;
+import com.sino.member.vo.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sino.member.entity.MemberEntity;
 import com.sino.member.service.MemberService;
@@ -92,6 +94,40 @@ public class MemberController {
 		memberService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo registVo){
+
+        try {
+            memberService.regist(registVo);
+        } catch (UserNameExistException e) {
+            return R.error(BizCodeEnum.USER_EXIST_EXCEPTION.getCode(), BizCodeEnum.USER_EXIST_EXCEPTION.getMsg());
+        } catch (PhoneExistException e) {
+            return R.error(BizCodeEnum.PHONE_EXIST_EXCEPTION.getCode(), BizCodeEnum.PHONE_EXIST_EXCEPTION.getMsg());
+        }
+        return R.ok();
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo memberLoginVo){
+        MemberEntity entity = memberService.login(memberLoginVo);
+        if (null == entity){
+           return R.error(BizCodeEnum.USERACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), BizCodeEnum.USERACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+
+        // 登录成功
+        return R.ok().setData(entity);
+    }
+
+    @PostMapping("/oauth2/login")
+    public R oauthLogin(@RequestBody SocialUser socialUser){
+        MemberEntity entity = memberService.login(socialUser);
+        if (null == entity){
+            return R.error(BizCodeEnum.USERACCT_PASSWORD_INVAILD_EXCEPTION.getCode(), BizCodeEnum.USERACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+
+        return R.ok().setData(entity);
     }
 
 }

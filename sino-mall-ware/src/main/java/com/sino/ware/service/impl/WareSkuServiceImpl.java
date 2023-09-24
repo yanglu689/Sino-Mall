@@ -3,6 +3,7 @@ package com.sino.ware.service.impl;
 import com.sino.common.utils.R;
 import com.sino.ware.entity.WareInfoEntity;
 import com.sino.ware.feign.ProductFeignService;
+import com.sino.ware.vo.SkuHasStockVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,6 +38,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
      * 查询页面
      * skuId: 123
      * wareId: 1
+     *
      * @param params 参数个数
      * @return {@link PageUtils}
      */
@@ -45,12 +48,12 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
         String skuId = (String) params.get("skuId");
         if (StringUtils.isNotEmpty(skuId) && !"0".equals(skuId)) {
-            wrapper.eq("sku_id",skuId);
+            wrapper.eq("sku_id", skuId);
         }
 
         String wareId = (String) params.get("wareId");
         if (StringUtils.isNotEmpty(wareId) && !"0".equals(wareId)) {
-            wrapper.eq("ware_id",wareId);
+            wrapper.eq("ware_id", wareId);
         }
 
         IPage<WareSkuEntity> page = this.page(
@@ -64,7 +67,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     @Override
     public void addOrUpdateStock(WareSkuEntity wareSkuEntity) {
         List<WareSkuEntity> wareSkuEntities = wareSkuDao.selectList(new QueryWrapper<WareSkuEntity>().eq("sku_id", wareSkuEntity.getSkuId()).eq("ware_id", wareSkuEntity.getWareId()));
-        if (ObjectUtils.isEmpty(wareSkuEntities)){
+        if (ObjectUtils.isEmpty(wareSkuEntities)) {
             wareSkuEntity.setStockLocked(0);
 
             try {
@@ -73,14 +76,26 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                     Map skuInfo = (Map) r.get("skuInfo");
                     wareSkuEntity.setSkuName((String) skuInfo.get("skuName"));
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error("TODO 自己catch异常，不会使事务失效");
 
             }
             wareSkuDao.insert(wareSkuEntity);
-        }else {
+        } else {
             wareSkuDao.updateStock(wareSkuEntity);
         }
+    }
+
+    @Override
+    public List<SkuHasStockVo> getSkuHasStock(List<Long> skuIds) {
+        List<SkuHasStockVo> skuHasStockVos = skuIds.stream().map(skuId -> {
+            SkuHasStockVo skuHasStockVo = new SkuHasStockVo();
+            Long count = baseMapper.getSkuStock(skuId);
+            skuHasStockVo.setHasStock(count != null && count > 0L);
+            skuHasStockVo.setSkuId(skuId);
+            return skuHasStockVo;
+        }).collect(Collectors.toList());
+        return skuHasStockVos;
     }
 
 }

@@ -34,5 +34,8 @@ public interface AttrService extends IService<AttrEntity> {
     List<ProductAttrValueEntity> listForSpu(Long spuId);
 
     void updateBySpuId(List<ProductAttrValueEntity> attrList, Long spuId);
+
+    List<Long> selectSearchAttrIds(List<Long> attrIds);
+
 }
 

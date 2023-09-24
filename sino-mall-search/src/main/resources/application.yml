@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: sino-mall-search
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.199.130
+  session:
+    store-type: redis
+server:
+  port: 12000

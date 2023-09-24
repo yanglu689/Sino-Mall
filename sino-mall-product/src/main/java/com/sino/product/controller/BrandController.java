@@ -2,6 +2,7 @@ package com.sino.product.controller;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sino.common.validator.group.AddGroup;
@@ -108,4 +109,13 @@ public class BrandController {
         return R.ok();
     }
 
+    /**
+     * 信息
+     */
+    @RequestMapping("/infos/{brandIds}")
+    public R infos( @PathVariable("brandIds") List<Long> brandIds){
+        List<BrandEntity> brands = brandService.getBrandInfos(brandIds);
+
+        return R.ok().put("brands", brands);
+    }
 }

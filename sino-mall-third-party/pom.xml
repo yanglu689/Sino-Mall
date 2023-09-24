@@ -57,6 +57,13 @@
             <version>4.4.5</version>
         </dependency>
 
+        <!--        引入spring-processor, 解决自定义配置类的时候提示-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
 
     </dependencies>
     <dependencyManagement>

@@ -6,6 +6,7 @@ import com.sino.product.entity.AttrEntity;
 import com.sino.product.entity.AttrGroupEntity;
 import com.sino.product.vo.AttrAttrGroupRelationVo;
 import com.sino.product.vo.AttrGroupVo;
+import com.sino.product.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 import java.util.Map;
@@ -32,5 +33,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     void addAttrAttrGroup(List<AttrAttrGroupRelationVo> vo);
 
     List<AttrGroupVo> getAttrGroupWithAttr(Long catelogId);
+
+    List<SpuItemAttrGroupVo> getAttrGroupWithAttrBySpuId(Long spuId, Long catalogId);
 }
 

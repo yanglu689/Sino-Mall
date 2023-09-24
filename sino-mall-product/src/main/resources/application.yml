@@ -12,6 +12,22 @@ spring:
         server-addr: 127.0.0.1:8848
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.199.130
+    port: 6379
+    # 使用sprng cache 缓存数据
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000 # 过期时间是一个小时
+#      key-prefix: CACHE_      # key前缀
+      use-key-prefix: true    # 是否开启key前缀
+      cache-null-values: true   # 是否缓存空值
+  session:
+    store-type: redis
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
@@ -22,4 +38,8 @@ mybatis-plus:
 logging:
   level:
     com.sino: debug
-
+sinomall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10

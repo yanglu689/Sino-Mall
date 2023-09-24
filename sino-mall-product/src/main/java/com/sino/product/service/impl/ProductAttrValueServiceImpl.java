@@ -41,4 +41,9 @@ public class ProductAttrValueServiceImpl extends ServiceImpl<ProductAttrValueDao
         this.saveBatch(attrList);
     }
 
+    @Override
+    public List<ProductAttrValueEntity> baseAttrListForSpu(Long spuId) {
+        return this.list(new QueryWrapper<ProductAttrValueEntity>().eq("spu_id", spuId));
+    }
+
 }

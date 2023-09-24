@@ -17,7 +17,7 @@ spring:
           uri: lb://sino-mall-product
           # 断言 这里是根据路径匹配
           predicates:
-            - Path=/api/product/**
+            - Path=/api/product/**, /hello
           # 设置过滤器
           filters: # 设置路径过滤将/api替换为/renren-fast
             - RewritePath=/api/(?<segment>.*), /$\{segment}
@@ -66,3 +66,26 @@ spring:
           filters: # 设置路径过滤将/api替换为/renren-fast
             - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
 
+        # 商城首页路由
+        - id: sino-mall-host-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-product
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=sinomall.com,item.sinomall.com
+
+        # 商品搜索入口路由
+        - id: sino-mall-search-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-search
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=search.sinomall.com
+
+        # 认证入口路由
+        - id: sino-mall-auth-server
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-auth-server
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=auth.sinomall.com

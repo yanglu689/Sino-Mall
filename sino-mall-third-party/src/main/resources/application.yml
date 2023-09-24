@@ -3,3 +3,8 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    alicloud:
+      host: https://dfsns.market.alicloudapi.com
+      path: /data/send_sms
+      template_id: CST_ptdie100
+      appcode: d997ce0dee59489db84f5487320e452f
