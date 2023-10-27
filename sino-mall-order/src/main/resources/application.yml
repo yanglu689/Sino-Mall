@@ -9,11 +9,57 @@ spring:
     url: jdbc:mysql://192.168.199.130:3306/sino_mall_oms
     driver-class-name: com.mysql.jdbc.Driver
   cloud:
-    nacos:
+    nacos: #nacos服务
       discovery:
         server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8989
+        port: 8719  #每一个微服务与控制台传输数据使用的端口
+    alibaba:
+      seata:
+        tx-service-group: sino-mall-order
+  rabbitmq:  # rabbitmq配置
+    host: 192.168.199.130
+    port: 5672
+    virtual-host: /
+    # 消息发送确认机制
+    publisher-returns: true
+    publisher-confirm-type: simple
+    # 消费端开启手动确认模式  默认是自动确认
+    listener:
+      simple:
+        acknowledge-mode: manual
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.199.130
+    port: 6379
+  mvc:
+    format:
+      date: yyyy-MM-dd HH:mm:ss
+  zipkin:   #调用链信息可视化采集
+    base-url: http://192.168.199.130:9411/     # 虚拟机地址
+    discovery-client-enabled: false            # 关闭服务发现 否则spring.cloud会把zipkin的url当作服务名
+    sender:
+      type: web    #以http的形式吧数据传输给服务器
+  sleuth:    #调用链监控信息，
+    sampler:
+      probability: 1  # 设置抽样采集率为 100%，默认为 0.1，即 10%
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+sinomall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+feign:
+  sentinel:
+    enabled: true
+#seata:
+#  tx-service-group: sino-mall-order

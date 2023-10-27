@@ -48,6 +48,10 @@
         <result property="commentTime" column="comment_time"/>
         <result property="modifyTime" column="modify_time"/>
     </resultMap>
+    <update id="updateOrderStatus">
+--          生成修改订单状态的sql语句
+        update oms_order set `status` = #{code} where order_sn = #{orderSn}
+    </update>
 
 
 </mapper>

@@ -22,6 +22,12 @@
             <groupId>com.sino</groupId>
             <artifactId>sino-mall-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,13 +43,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.18.Final</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!--        阿里云对象存储依赖-->
 <!--        <dependency>-->
 <!--            <groupId>com.aliyun.oss</groupId>-->

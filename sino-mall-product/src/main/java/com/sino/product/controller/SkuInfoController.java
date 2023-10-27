@@ -1,5 +1,6 @@
 package com.sino.product.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -79,6 +80,15 @@ public class SkuInfoController {
 		skuInfoService.removeByIds(Arrays.asList(skuIds));
 
         return R.ok();
+    }
+
+    /**
+     * 获取商品价格
+     */
+    @RequestMapping("/getPrice/{skuId}")
+    public BigDecimal getPrice(@PathVariable("skuId") Long skuId){
+        SkuInfoEntity skuInfo = skuInfoService.getById(skuId);
+        return skuInfo.getPrice();
     }
 
 }

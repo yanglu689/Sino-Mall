@@ -1,12 +1,23 @@
+feign:
+  sentinel:
+    enabled: true
 spring:
   cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8989
+        port: 8719  #每一个微服务与控制台传输数据使用的端口
+      scg:
+        fallback:
+          content-type: application/json # 失败后返回的内容类型
+#          response-status: 400  # 失败后返回的状态码
     gateway:
       routes:
-        - id: baidu_route
+        - id: baidu-route
           uri: https://www.baidu.com
           predicates:
             - Query=url,baidu
-        - id: qq_route
+        - id: qq-route
           uri: https://www.qq.com
           predicates: #根据参数路由
             - Query=url,qq
@@ -18,6 +29,17 @@ spring:
           # 断言 这里是根据路径匹配
           predicates:
             - Path=/api/product/**, /hello
+          # 设置过滤器
+          filters: # 设置路径过滤将/api替换为/renren-fast
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+        # 优惠服务api接口
+        - id: coupon-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-coupon
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Path=/api/coupon/**
           # 设置过滤器
           filters: # 设置路径过滤将/api替换为/renren-fast
             - RewritePath=/api/(?<segment>.*), /$\{segment}
@@ -83,9 +105,41 @@ spring:
             - Host=search.sinomall.com
 
         # 认证入口路由
-        - id: sino-mall-auth-server
+        - id: sino-mall-auth-server-route
           # lb:负载均衡 //xxx = 服务名
           uri: lb://sino-mall-auth-server
           # 断言 这里是根据路径匹配
           predicates:
             - Host=auth.sinomall.com
+
+        # 购物车入口路由
+        - id: sino-mall-car-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-car
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=cart.sinomall.com
+
+        # 购物车入口路由
+        - id: sino-mall-order-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-order
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=order.sinomall.com
+
+        # 购物车入口路由
+        - id: sino-mall-member-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-member
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=member.sinomall.com
+
+        # 购物车入口路由
+        - id: sino-mall-seckill-route
+          # lb:负载均衡 //xxx = 服务名
+          uri: lb://sino-mall-seckill
+          # 断言 这里是根据路径匹配
+          predicates:
+            - Host=seckill.sinomall.com

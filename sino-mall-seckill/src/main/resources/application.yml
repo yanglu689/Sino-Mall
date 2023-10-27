@@ -1,0 +1,50 @@
+server:
+  port: 13000
+spring:
+  application:
+    name: sino-mall-seckill
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8989
+        port: 8719  #每一个微服务与控制台传输数据使用的端口
+  redis:
+    host: 192.168.199.130
+    port: 6379
+  task: # \u5F02\u6B65\u4EFB\u52A1\u7684\u914D\u7F6E
+    execution:
+      pool:
+        core-size: 5
+        max-size: 20
+  session:
+    store-type: redis
+  rabbitmq:
+    host: 192.168.199.130
+    virtual-host: /
+  thymeleaf:
+    cache: false
+  zipkin:   #调用链信息可视化采集
+    base-url: http://192.168.199.130:9411/     # 虚拟机地址
+    discovery-client-enabled: false            # 关闭服务发现 否则spring.cloud会把zipkin的url当作服务名
+    sender:
+      type: web    #以http的形式吧数据传输给服务器
+  sleuth:    #调用链监控信息，
+    sampler:
+      probability: 1  # 设置抽样采集率为 100%，默认为 0.1，即 10%
+#    listener:
+#      simple:
+#        acknowledge-mode: manual # 开启手动确认机制， 用于监听消息的服务，在秒杀系统不需要
+#    scheduling:  # \u5B9A\u65F6\u4EFB\u52A1\u7EBF\u7A0B\u6C60\u914D\u7F6E ==\u300B \u53EF\u80FD\u4E0D\u751F\u6548
+#      pool:
+feign:
+  sentinel:
+    enabled: true
+#        size:  5
+logging:
+  level:
+    com.sino: debug
+    org.springframework.cloud.openfeign: debug
+    org.springframework.cloud.sleuth: debug

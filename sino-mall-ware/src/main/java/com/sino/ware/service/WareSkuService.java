@@ -1,10 +1,14 @@
 package com.sino.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sino.common.to.mq.OrderTo;
+import com.sino.common.to.mq.StockLockedTo;
 import com.sino.common.utils.PageUtils;
 import com.sino.ware.entity.WareSkuEntity;
 import com.sino.ware.vo.SkuHasStockVo;
+import com.sino.ware.vo.WareSkuLockVo;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +21,16 @@ import java.util.Map;
  */
 public interface WareSkuService extends IService<WareSkuEntity> {
 
+    void unLockStock(StockLockedTo lockedTo) throws IOException;
+
     PageUtils queryPage(Map<String, Object> params);
 
     void addOrUpdateStock(WareSkuEntity wareSkuEntity);
 
     List<SkuHasStockVo> getSkuHasStock(List<Long> skuIds);
+
+    Boolean orderLockStock(WareSkuLockVo vo);
+
+    void unLockStock(OrderTo orderTo);
 }
 

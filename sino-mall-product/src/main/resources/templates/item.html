@@ -59,10 +59,12 @@
             </ul>
             <ul class="header_ul_right">
                 <li style="border: 0;">
-                    <a  th:if="${session.loginUser!=null}">欢迎：[[${session.loginUser!=null?session.loginUser.nickname:''}]]</a>
+                    <a th:if="${session.loginUser!=null}">欢迎：[[${session.loginUser!=null?session.loginUser.nickname:''}]]</a>
                     <a href="http://auth.sinomall.com/login.html" th:if="${session.loginUser==null}">你好，请登录</a>
                 </li>
-                <li><a href="http://auth.sinomall.com/reg.html" class="li_2" th:if="${session.loginUser==null}">免费注册</a> |</li>
+                <li><a href="http://auth.sinomall.com/reg.html" class="li_2" th:if="${session.loginUser==null}">免费注册</a>
+                    |
+                </li>
                 <li><a href="/static/item/javascript:;" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
                         class="glyphicon glyphicon-menu-down">|</span>
@@ -125,7 +127,6 @@
                                 <a href="/static/item/javascript:;">装机大师</a>
                                 <a href="/static/item/javascript:;">0元评测</a>
                                 <a href="/static/item/javascript:;">定期送</a>
-                                <a href="/static/item/javascript:;">港澳售</a>
                             </p>
                             <p>
                                 <a href="/static/item/javascript:;">优惠券</a>
@@ -516,10 +517,16 @@
                         <li>京东价</li>
                         <li>
                             <span>￥</span>
-                            <span th:text="${#numbers.formatDecimal(item.info.price,3,2)}">4499.00</span>
+                            <span th:text="${#numbers.formatDecimal(item.info.price,1,2)}">4499.00</span>
                         </li>
-                        <li>
-                            预约享资格
+                        <li style="color: red" th:if="${item.redisVo != null}">
+                            <span th:if="${#dates.createNow().getTime() < item.redisVo.startTime}">
+                                商品将会在[[${#dates.format(new java.util.Date(item.redisVo.startTime), "yyyy-MM-dd HH:mm:ss")}]]进行秒杀
+                            </span>
+
+                            <span th:if="${#dates.createNow().getTime() >= item.redisVo.startTime && #dates.createNow().getTime() <= item.redisVo.endTime}">
+                                秒杀价格：￥[[${#numbers.formatDecimal(item.redisVo.relationVo.seckillPrice,1,2)}]]
+                            </span>
                         </li>
                         <li>
                             <a href="/static/item/">
@@ -626,7 +633,7 @@
 
                 <div class="box-btns clear">
                     <div class="box-btns-one">
-                        <input type="text" name="" id="" value="1"/>
+                        <input type="text" name="" id="numInput" value="1"/>
                         <div class="box-btns-one1">
 
                             <div>
@@ -642,9 +649,17 @@
 
                         </div>
                     </div>
-                    <div class="box-btns-two">
-                        <a href="/static/item/../商品分类\index.html">
-                            立即预约
+                    <div class="box-btns-two"
+                         th:if="${item.redisVo != null && #dates.createNow().getTime() >= item.redisVo.startTime && #dates.createNow().getTime() <= item.redisVo.endTime}">
+                        <a href="#" id="secKill"
+                           th:attr="skuId = ${item.info.skuId} , sessionId = ${item.redisVo.relationVo.promotionSessionId}, code = ${item.redisVo.randomCode}">
+                            立即抢购
+                        </a>
+                    </div>
+                    <div class="box-btns-two"
+                         th:if="${item.redisVo == null || #dates.createNow().getTime() < item.redisVo.startTime || #dates.createNow().getTime() > item.redisVo.endTime}">
+                        <a href="#" id="addToCart" th:attr="skuId = ${item.info.skuId}">
+                            加入购物车
                         </a>
                     </div>
                     <div class="box-btns-three">
@@ -1321,6 +1336,27 @@
 
         $(".sku_attr_value").parent().css({"border": "solid 1px #CCC"});
         $("a[class='sku_attr_value checked']").parent().css({"border": "solid 1px red"});
+    })
+
+    $("#addToCart").click(function () {
+        var num = $("#numInput").val();
+        var skuId = $(this).attr("skuId");
+
+        location.href = "http://cart.sinomall.com/addToCart?skuId=" + skuId + "&num=" + num;
+        return false;
+    })
+
+    $("#secKill").click(function () {
+        var isLogin = [[${session.loginUser!=null}]];
+        if (isLogin){
+            var num = $("#numInput").val();
+            var killId = $(this).attr("sessionId") + "_" + $(this).attr("skuId");
+            var key = $(this).attr("code");
+            location.href = "http://seckill.sinomall.com/kill?killId=" + killId + "&num=" + num + "&key=" + key;
+        } else {
+            alert("请登录后进行秒杀");
+        }
+        return false;
     })
 
 </script>

@@ -7,6 +7,10 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8989
+        port: 8719  #每一个微服务与控制台传输数据使用的端口
   thymeleaf:
     cache: false
   redis:
@@ -15,7 +19,18 @@ spring:
   session:
     store-type: redis
     timeout: 30m
+  zipkin:   #调用链信息可视化采集
+    base-url: http://192.168.199.130:9411/     # 虚拟机地址
+    discovery-client-enabled: false            # 关闭服务发现 否则spring.cloud会把zipkin的url当作服务名
+    sender:
+      type: web    #以http的形式吧数据传输给服务器
+  sleuth:    #调用链监控信息，
+    sampler:
+      probability: 1  # 设置抽样采集率为 100%，默认为 0.1，即 10%
 sinomall:
   server:
     auth-domain: auth.sinomall.com
     index-domain: sinomall.com
+feign:
+  sentinel:
+    enabled: true

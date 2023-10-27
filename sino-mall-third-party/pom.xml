@@ -42,10 +42,14 @@
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-boot-starter</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
-<!--        alibaba对象存储-->
+        <!--        alibaba对象存储-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>aliyun-oss-spring-boot-starter</artifactId>

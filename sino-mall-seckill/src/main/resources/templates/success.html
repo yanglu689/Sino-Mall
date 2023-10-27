@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script type="text/javascript" src="http://cart.sinomall.com/static/car/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="http://cart.sinomall.com/static/car/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="http://cart.sinomall.com/static/car/js/swiper.min.js"></script>
+    <script src="http://cart.sinomall.com/static/car/js/swiper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cart.sinomall.com/static/car/css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://cart.sinomall.com/static/car/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="http://cart.sinomall.com/static/car/css/success.css"/>
+
+</head>
+
+<body>
+<!--头部-->
+<div class="alert-info">
+    <div class="hd_wrap_top">
+        <ul class="hd_wrap_left">
+            <li class="hd_home"><i class="glyphicon glyphicon-home"></i>
+                <a href="http://sinomall.com">谷粒商城首页</a>
+            </li>
+
+        </ul>
+
+        <ul class="hd_wrap_right">
+            <li style="width: 100px">
+                <a th:if="${session.loginUser!=null}">欢迎：[[${session.loginUser!=null?session.loginUser.nickname:''}]]</a>
+                <a href="http://auth.sinomall.com/login.html" th:if="${session.loginUser==null}">你好，请登录</a>
+            </li>
+            <li>
+                <a href="http://auth.sinomall.com/reg.html" class="li_2" th:if="${session.loginUser==null}">免费注册</a>
+            </li>
+            <li class="spacer"></li>
+
+            <li>
+                <a href="http://order.sinomall.com/list.html">我的订单</a>
+            </li>
+
+
+        </ul>
+
+    </div>
+</div>
+
+<div class="nav-tabs-justified">
+    <div class="nav_wrap">
+
+        <div class="nav_top">
+            <div class="nav_top_one">
+                <a href="http://sinomall.com"><img src="http://cart.sinomall.com/static/car/img/logo1.jpg"
+                                                   style="height: 60px;width:180px;"/></a>
+            </div>
+            <div class="nav_top_two"><input type="text"/>
+                <button>搜索</button>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="main">
+
+    <div class="success-wrap">
+        <div class="w" id="result">
+            <div class="m succeed-box">
+                <div class="mc success-cont">
+                    <div class="success-lcol">
+                        <div class="success-top" th:if="${orderSn != null}"><b class="succ-icon"></b>
+                            <h3 class="ftx-02">太幸运了！商品秒杀成功，订单号[[${orderSn}]]</h3>
+                            <h3 class="ftx-02">增在准备订单数据，请在10秒后前往支付页面支付 <a
+                                    th:href="${'http://order.sinomall.com/payOrder?orderSn='+orderSn}">去支付</a></h3>
+                        </div>
+                    </div>
+                    <div class="success-top" th:if="${orderSn == null}"><b class="succ-icon"></b>
+                        <h3 class="ftx-02">很遗憾！商品与你插肩而过，请关注后续活动</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</body>
+<script type="text/javascript" src="http://cart.sinomall.com/static/car/js/success.js"></script>
+
+</html>
