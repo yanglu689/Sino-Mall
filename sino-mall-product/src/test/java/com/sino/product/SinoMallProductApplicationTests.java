@@ -55,8 +55,8 @@ class SinoMallProductApplicationTests {
 //// Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
 //        String endpoint = "oss-cn-beijing.aliyuncs.com";
 //        // RAM用户的访问密钥（AccessKey ID和AccessKey Secret）。
-//        String accessKeyId = "LTAI5t7z59mg9LpmozCmXBK8";
-//        String accessKeySecret = "VUopV9iBBrFufjyOH0Ew8N8hfSjrsE";
+//        String accessKeyId = "*****************";
+//        String accessKeySecret = "*****************";
 //// 使用代码嵌入的RAM用户的访问密钥配置访问凭证。
 //        CredentialsProvider credentialsProvider = new DefaultCredentialProvider(accessKeyId, accessKeySecret);
 //        // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
